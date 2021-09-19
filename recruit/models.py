@@ -44,3 +44,19 @@ class Project(models.Model):
     def __str__(self):
         return self.title + " (팀장: {})".format(self.manager_id)
 
+
+
+class User(models.Model):
+    user_id = models.CharField(max_length=50, unique=True)
+    user_name = models.CharField(max_length=50)
+    nick_name = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=100,  unique=True)
+    # picture = models.ImageField(upload_to='')
+
+    def __str__(self):
+        return self.user_name
+
+    class Meta:
+        db_table = 'user'
+        verbose_name = '사용자'
+        verbose_name_plural = '사용자'
