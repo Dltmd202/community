@@ -5,8 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Application(models.Model):
-    # project_id = models.ForeignKey(Project)
-    # user_id = models.ForeignKey(User)
+    project_id = models.ForeignKey(Project)
+    user_id = models.ForeignKey(User)
     form_data_json = models.TextField()
 
 
