@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트</title>
+</head>
+<body>
+    <div>
+        <h1>{{ project.title }}</h1>
+        <p>{{ project.description }}</p>
+    </div>
+    <div>
+        <h3>팀원 목록</h3>
+        <ul>
+        {% for user in project.member.all %}
+            <li>{{ user }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <button type="button">지원하기</button>
+    </div>
+</body>
+</html>

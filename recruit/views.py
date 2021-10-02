@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import *
 
 import json
@@ -55,3 +55,26 @@ def draw_up_application(request, application_id):
     #         application = request.POST.get('application')
     #         current_user.object.application
     pass
+
+
+
+### PROJECT ###
+def add_member(project: Project, user: int) -> bool:
+    members = project.member.all()
+    if (members.count() + 1) > project.max_recruit:
+        return False
+    elif members.filter(pk=user).exists():
+        return False
+    project.member.add(user)
+    return True
+
+def remove_member(project: Project, user: int) -> bool:
+    user_obj = project.member.filter(pk=user)
+    if not user_obj: return False
+    project.member.remove(user_obj)
+    return True
+
+def project_view(request, id):
+    project = get_object_or_404(Project, pk=id)
+    # print(remove_member(project, request.user.pk))
+    return render(request, 'project/project.html', {'project': project})
