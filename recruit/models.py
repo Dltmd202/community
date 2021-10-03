@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as usr
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -38,7 +38,7 @@ class User(models.Model):
 class Project(models.Model):
     manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, 
         related_name="manager")
-    member = models.ManyToManyField(User)
+    member = models.ManyToManyField(usr)
     estimate = models.ForeignKey(Estimate, on_delete=models.SET_NULL, blank=False, null=True)
     tag = models.ManyToManyField(Tag)
 

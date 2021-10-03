@@ -17,8 +17,13 @@
         {% endfor %}
         </ul>
     </div>
-    <div>
-        <button type="button">지원하기</button>
-    </div>
+    <form action="{% url 'project' id=project.pk %}" method="post">
+        {% csrf_token %} 
+        <button type="submit">지원하기</button>
+    </form>
+    <form action="{% url 'kick' id=project.pk %}" method="post">
+        {% csrf_token %} 
+        <button type="submit">탈퇴하기</button>
+    </form>
 </body>
 </html>

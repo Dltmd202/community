@@ -1,4 +1,6 @@
-from django.shortcuts import get_object_or_404, render
+from django.http.response import HttpResponseBadRequest
+from django.views import View
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 
 import json
@@ -71,10 +73,20 @@ def add_member(project: Project, user: int) -> bool:
 def remove_member(project: Project, user: int) -> bool:
     user_obj = project.member.filter(pk=user)
     if not user_obj: return False
-    project.member.remove(user_obj)
+    project.member.remove(user)
     return True
+
 
 def project_view(request, id):
     project = get_object_or_404(Project, pk=id)
-    # print(remove_member(project, request.user.pk))
+    if request.method == 'POST':
+        if not add_member(project, request.user.pk):
+            return HttpResponseBadRequest()
     return render(request, 'project/project.html', {'project': project})
+
+def kick_member_view(request, id):
+    project= get_object_or_404(Project, pk=id)
+    if request.method == 'POST':
+        if not remove_member(project, request.user.pk):
+            return HttpResponseBadRequest()
+    return redirect('project', id)
