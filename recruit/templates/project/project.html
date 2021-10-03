@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트</title>
+</head>
+<body>
+    <div>
+        <h1>{{ project.title }}</h1>
+        <p>{{ project.description }}</p>
+    </div>
+    <div>
+        <h3>팀원 목록</h3>
+        <ul>
+        {% for user in project.member.all %}
+            <li>{{ user }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <form action="{% url 'project' id=project.pk %}" method="post">
+        {% csrf_token %} 
+        <button type="submit">지원하기</button>
+    </form>
+    <form action="{% url 'kick' id=project.pk %}" method="post">
+        {% csrf_token %} 
+        <button type="submit">탈퇴하기</button>
+    </form>
+</body>
+</html>

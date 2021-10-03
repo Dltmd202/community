@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.http.response import HttpResponseBadRequest
+from django.views import View
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 
 import json
@@ -68,3 +70,36 @@ def draw_up_application(request, application_id):
             return redirect()
     else:
         raise PermissionDenied
+
+
+
+### PROJECT ###
+def add_member(project: Project, user: int) -> bool:
+    members = project.member.all()
+    if (members.count() + 1) > project.max_recruit:
+        return False
+    elif members.filter(pk=user).exists():
+        return False
+    project.member.add(user)
+    return True
+
+def remove_member(project: Project, user: int) -> bool:
+    user_obj = project.member.filter(pk=user)
+    if not user_obj: return False
+    project.member.remove(user)
+    return True
+
+
+def project_view(request, id):
+    project = get_object_or_404(Project, pk=id)
+    if request.method == 'POST':
+        if not add_member(project, request.user.pk):
+            return HttpResponseBadRequest()
+    return render(request, 'project/project.html', {'project': project})
+
+def kick_member_view(request, id):
+    project= get_object_or_404(Project, pk=id)
+    if request.method == 'POST':
+        if not remove_member(project, request.user.pk):
+            return HttpResponseBadRequest()
+    return redirect('project', id)

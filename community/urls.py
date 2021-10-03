@@ -17,7 +17,10 @@ from django.conf import settings
 from django.conf.urls import static
 from django.contrib import admin
 from django.urls import path
+from recruit import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('project/<str:id>', views.project_view, name="project"),
+    path('project/<str:id>/kick', views.kick_member_view, name="kick")
 ]
