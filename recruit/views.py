@@ -29,18 +29,20 @@ def get_random_tag_color():
 
 
 def application_encoder(request):
+    if request.user.is_authenticated:
     # FE 에서 input 항목의 이름과 유형 선택해서 post
     # 항목 개수도 cnt로 매핑해서 post
-    if request.method == 'POST':
-        application = []
-        cnt = int(request.POST.get('cnt'))
-        for i in range(1, cnt + 1):
-            application_form = request.POST.get(str(i))
-            application_form["answer"] = ""
-            application.append(application_form)
-        application_info = {
-            "application": application
-        }
+        if request.method == 'POST':
+            application = []
+            cnt = int(request.POST.get('cnt'))
+            for i in range(1, cnt + 1):
+                application_form = request.POST.get(str(i))
+                application_form["answer"] = ""
+                application.append(application_form)
+            application_info = {
+                "application": application
+            }
+    return application_info
 
 
 def application_parser(application_id):
@@ -50,13 +52,24 @@ def application_parser(application_id):
 
 
 def draw_up_application(request, application_id):
-    # current_user == self.request.user
-    # application = application_parser(application_id)
-    # if current_user.is_authenticated:
-    #     if request.method == 'POST':
-    #         application = request.POST.get('application')
-    #         current_user.object.application
-    pass
+    current_user == self.request.user
+    application = application_parser(application_id)
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            application = request.POST.get('application')
+            current_user.object.application
+            for i in range(1, cnt + 1):
+                application_form = request.POST.get(str(i))
+                application_form["answer"] = ""
+                application.append(application_form)
+            application_info = {
+                "application": application
+            }
+            
+        else:
+            return redirect()
+    else:
+        raise PermissionDenied
 
 
 
