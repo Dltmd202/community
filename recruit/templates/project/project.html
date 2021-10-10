@@ -1,29 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>프로젝트</title>
-</head>
-<body>
-    <div>
-        <h1>{{ project.title }}</h1>
-        <p>{{ project.description }}</p>
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block head_title %}프로젝트{% endblock %}
+{% block main_area %}
+<div class="container">
+    <div class="mb-5" id="project_head">
+        <div class="h1 fw-bold">{{ project.title }}</div>
+        <div>
+            <div class="d-inline me-3">{{ project.written_date|date:"Y.m.d - H:i:s" }}</div>
+            <div class="d-inline">{{ project.manager }}</div>
+        </div>
     </div>
-    <div>
-        <h3>팀원 목록</h3>
-        <ul>
-        {% for user in project.member.all %}
-            <li>{{ user }}</li>
-        {% endfor %}
-        </ul>
+    <div id="project_attributes">
+        <div class="h5 fw-bold d-inline my-3">{{ project.member.count }} / {{ project.max_recruit }} 명 모집중</div>
+        <div class="d-inline"> <!-- 디버깅용, 나중에 삭제할것 -->
+            ( 디버깅용 users = 
+            {% for user in project.member.all %}
+                <span>{{ user }}</span>,
+            {% endfor %}
+            )
+        </div>
+        <div class="h5 fw-bold my-3">예상 소요기간: ({{ project.estimate }})</div>
+        <div class="h5 fw-bold my-3">
+            프로젝트 태그:
+            <div class="d-inline">
+                {% for tag in project.tag.all %}
+                    <span>({{ tag }})</span>,
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <form action="{% url 'project' id=project.pk %}" method="post">
-        {% csrf_token %} 
-        <button type="submit">지원하기</button>
-    </form>
-    <form action="{% url 'kick' id=project.pk %}" method="post">
-        {% csrf_token %} 
-        <button type="submit">탈퇴하기</button>
-    </form>
-</body>
-</html>
+    <div id="project_buttons" class="my-5">
+        <form class="d-inline" action="{% url 'project' id=project.pk %}" method="post">
+            {% csrf_token %} 
+            <button type="submit" class="btn btn-primary">지원하기</button>
+        </form>
+        <form class="d-inline" action="{% url 'kick' id=project.pk %}" method="post">
+            {% csrf_token %} 
+            <button type="submit" class="btn btn-danger">탈퇴하기</button>
+        </form>
+    </div>
+    <div id="project_desc">
+        {{ project.description }}
+    </div>
+</div>
+{% endblock %}

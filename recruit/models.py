@@ -8,6 +8,9 @@ class Estimate(models.Model):
     timeframe = models.CharField(max_length=10)
     converted_months = models.DateTimeField()
 
+    def __str__(self):
+        return self.timeframe
+
 
 class Tag_Type(models.Model):
     type = models.CharField(max_length=10)
@@ -17,6 +20,9 @@ class Tag(models.Model):
     name = models.CharField(max_length=10)
     color = models.CharField(max_length=7, default="FFFFFF")
     tag_type = models.ForeignKey(Tag_Type, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class User(models.Model):
