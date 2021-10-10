@@ -46,10 +46,12 @@ class Project(models.Model):
 
 
 
+
 class User(models.Model):
     user_id = models.CharField(max_length=50, unique=True)
     user_name = models.CharField(max_length=50)
-    nick_name = models.CharField(max_length=50, unique=True)
+    # nick_name = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length = 300)
     email = models.EmailField(max_length=100,  unique=True)
     # picture = models.ImageField(upload_to='')
 
