@@ -57,7 +57,7 @@ class Project(models.Model):
     question_list_json = models.TextField(max_length=2000, blank=True, null=True)
 
     def __str__(self):
-        return self.title + " (팀장: {})".format(self.manager_id)
+        return self.title + " (팀장: {})".format(self.manager)
 
 
 class Application(models.Model):
