@@ -74,6 +74,7 @@ def draw_up_application(request, application_id):
 
 
 ### PROJECT ###
+# 프로젝트에 멤버 추가하는 메소드
 def add_member(project: Project, user: int) -> bool:
     members = project.member.all()
     if (members.count() + 1) > project.max_recruit:
@@ -83,12 +84,17 @@ def add_member(project: Project, user: int) -> bool:
     project.member.add(user)
     return True
 
+# 프로젝트에서 멤버 제거하는 메소드
 def remove_member(project: Project, user: int) -> bool:
     user_obj = project.member.filter(pk=user)
     if not user_obj: return False
     project.member.remove(user)
     return True
 
+
+def project_list_view(request):
+    projects = Project.objects.all()
+    return render(request, 'project/project_list.html', {'projects': projects})
 
 def project_view(request, id):
     project = get_object_or_404(Project, pk=id)

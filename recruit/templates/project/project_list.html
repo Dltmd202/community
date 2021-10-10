@@ -1,0 +1,20 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block head_title %}프로젝트 목록{% endblock %}
+{% block main_area %}
+<div class="container">
+    <div class="h1 fw-bold mb-5">프로젝트 목록</div>
+    <button class="btn btn-primary">팀원 모집</button>
+    <div id="project_list" class="my-5">
+    {% for project in projects %}
+        <div class="my-3">
+            <a href="{% url 'project' id=project.pk %}">
+                {{ forloop.counter }}. {{ project }}
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
