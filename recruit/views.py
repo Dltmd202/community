@@ -43,28 +43,35 @@ def application_encoder(request):
     return application_info
 
 
-def application_parser(application_id):
-    application = Application.object.get(pk=application_id).json()
-    application_data = json.dumps(application)
-    return application_data
+def application_parser(project_id: int):
+    question_list = get_question_list(project_id).json()
+    cnt = question_list['question_cnt']
+    questions = dict()
+    for i in range(1, cnt + 1):
+        questions[i] = question_list[i]
+    return cnt, questions
 
 
-def draw_up_application(request, application_id):
+def get_question_list(project_id):
+    application: Project = Project.objects.get(applcation_id)
+    return application.question_list_json
+
+
+def draw_up_application(request, project_id):
     current_user == self.request.user
-    application = application_parser(application_id)
+    cnt, questions = application_parser(project_id)
     if current_user.is_authenticated:
+        application = Application.object.create()
+        application['user_id'] = current_user
+        application['project_id'] = project_id
+        answers = dict()
         if request.method == 'POST':
-            application = request.POST.get('application')
-            current_user.object.application
-            for i in range(1, cnt + 1):
-                application_form = request.POST.get(str(i))
-                application_form["answer"] = ""
-                application.append(application_form)
-            application_info = {
-                "application": application
-            }
-            
+            for i in range(1, cnt):
+                ans = request.POST[str(i)]
+            application['form_data_json'] = answers.json()
         else:
             return redirect()
     else:
         raise PermissionDenied
+
+
