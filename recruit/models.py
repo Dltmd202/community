@@ -42,7 +42,7 @@ class User(models.Model):
 
 
 class Project(models.Model):
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, 
+    manager = models.ForeignKey(usr, on_delete=models.CASCADE, blank=False, null=False, 
         related_name="manager")
     member = models.ManyToManyField(usr)
     estimate = models.ForeignKey(Estimate, on_delete=models.SET_NULL, blank=False, null=True)

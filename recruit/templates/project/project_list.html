@@ -6,7 +6,7 @@
 {% block main_area %}
 <div class="container">
     <div class="h1 fw-bold mb-5">프로젝트 목록</div>
-    <button class="btn btn-primary">팀원 모집</button>
+    <a class="btn btn-primary" href="{% url 'project_create' %}">팀원 모집</a>
     <div id="project_list" class="my-5">
     {% for project in projects %}
         <div class="my-3">

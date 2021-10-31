@@ -1,0 +1,18 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block head_title %}프로젝트{% endblock %}
+{% block main_area %}
+<div class="container">
+    <div class="h1 fw-bold mb-5">프로젝트 팀원 모집하기</div>
+    <form action="" method="post" class="">
+        {% csrf_token %}
+        <div>{{ form.title }}</div>
+        <div>{{ form.max_recruit }}</div>
+        <div>{{ form.estimate }}</div>
+        <div>{{ form.description }}</div>
+        <button class="btn btn-lg btn-primary mt-4 px-5" type="submit">제출</button>
+    </form>
+</div>
+{% endblock %}

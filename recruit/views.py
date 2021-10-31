@@ -1,10 +1,11 @@
-from django.http.response import HttpResponseBadRequest
+from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
 from django.views import View
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
+from .forms import *
 
 import json
-
+import datetime
 
 # Create your views here.
 def Tag_list(request, name):
@@ -96,7 +97,6 @@ def remove_member(project: Project, user: int) -> bool:
     project.member.remove(user)
     return True
 
-
 def project_list_view(request):
     projects = Project.objects.all()
     return render(request, 'project/project_list.html', {'projects': projects})
@@ -114,3 +114,28 @@ def kick_member_view(request, id):
         if not remove_member(project, request.user.pk):
             return HttpResponseBadRequest()
     return redirect('project', id)
+
+def project_create_view(request):
+    if request.user.is_authenticated:
+        user = request.user
+        form = ProjectCreateForm()
+        if request.method == 'POST':
+            form = ProjectCreateForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                estimate = form.cleaned_data['estimate']
+                max_recruit = form.cleaned_data['max_recruit']
+                description = form.cleaned_data['description']
+                estimate_obj = get_object_or_404(Estimate, converted_months=datetime.datetime(2021, 10, 31, 9, 57, 52))
+                project = Project(
+                    manager=user, estimate=estimate_obj, title=title, 
+                    max_recruit=max_recruit, description=description
+                )
+                project.save()
+                print(type(project.pk))
+                return redirect('project', project.pk)
+            else:
+                return HttpResponseBadRequest("폼 형식이 옳지 않습니다.")
+        return render(request, 'project/project_create.html', {'form': form})
+    else:
+        return HttpResponseForbidden("로그인을 해주세요.")

@@ -21,7 +21,8 @@ from recruit import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('project/<str:id>/', views.project_view, name="project"),
-    path('project/<str:id>/kick/', views.kick_member_view, name="kick"),
-    path('project/', views.project_list_view, name="project_list")
+    path('project/<int:id>/', views.project_view, name="project"),
+    path('project/<int:id>/kick/', views.kick_member_view, name="kick"),
+    path('project/', views.project_list_view, name="project_list"),
+    path('project/create/', views.project_create_view, name="project_create")
 ]
